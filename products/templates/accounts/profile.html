@@ -1,0 +1,10 @@
+{% extends "shop/base.html" %}
+{% block title %}Моят профил{% endblock %}
+
+{% block content %}
+<h2>Здравей, {{ user.username }}!</h2>
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Изход</button>
+    </form>
+{% endblock %}
