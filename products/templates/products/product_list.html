@@ -4,22 +4,7 @@
 
 {% block content %}
 <h1 class="mb-4">🛒 Всички продукти</h1>
-<!--<div class="row">-->
-<!--    {% for product in products %}-->
-<!--        <div class="col-md-4">-->
-<!--            <div class="card product-card mb-4">-->
-<!--                {% if product.image %}-->
-<!--                    <img src="{{ product.image.url }}" class="card-img-top product-img" alt="{{ product.name }}">-->
-<!--                {% endif %}-->
-<!--                <div class="card-body text-center">-->
-<!--                    <h5 class="card-title">{{ product.name }}</h5>-->
-<!--                    <p class="card-text">Цена: <strong>{{ product.price }} лв.</strong></p>-->
-<!--                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">Виж повече</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    {% endfor %}-->
-<!--</div>-->
+
     <div class="row">
         {% for product in products %}
             <div class="col-md-4">
