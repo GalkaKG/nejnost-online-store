@@ -13,7 +13,7 @@ SECRET_KEY = "django-insecure-2-g3sp1_k9ypn6#s-7m*1@!ehs#p@ni-qc2qs9dcd93f%+8)nl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["momshop.onrender.com", "127.0.0.1"]
 
 
 # Application definition
