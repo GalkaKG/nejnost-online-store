@@ -24,9 +24,30 @@
         <p><strong>Описание:</strong> {{ product.description }}</p>
         <p><strong>Цена:</strong> {{ product.price }} лв</p>
 
+        <!-- Цветови варианти -->
+        {% if product.variants.all %}
+        <div class="color-selection">
+            <p><strong>Изберете цвят:</strong></p>
+            <div class="color-dots mb-3">
+                {% for variant in product.variants.all %}
+                    {% if variant.color.hex_code %}
+                    <input type="radio" name="variant" id="variant-{{ variant.id }}" class="color-input" value="{{ variant.id }}" />
+                    <label for="variant-{{ variant.id }}" class="color-dot" style="background-color: {{ variant.color.hex_code }};" title="{{ variant.color.name }}">
+                        <img id="variant-image-{{ variant.id }}" src="{{ variant.image_url }}" style="display:none;" />
+                    </label>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Add to Cart button with form submission -->
         <form method="POST" action="{% url 'add_to_cart' product.id %}">
             {% csrf_token %}
+
+            <!-- Скрито поле за избран вариант -->
+            <input type="hidden" name="variant_id" id="selected-variant-id" value="" />
+
             <button type="submit" class="btn btn-success">
                 <i class="fas fa-cart-plus"></i> Добави в количката
             </button>
@@ -49,85 +70,122 @@
 </div>
 
 <script>
-        // Ensure the DOM is fully loaded before running the script
-        document.addEventListener('DOMContentLoaded', function () {
-            // Function to change the main image and open modal when clicking on thumbnails
-            function changeMainImage(imageUrl) {
-                const mainImage = document.getElementById("main-image");
+    // Ensure the DOM is fully loaded before running the script
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to change the main image and open modal when clicking on thumbnails
+        function changeMainImage(imageUrl) {
+            const mainImage = document.getElementById("main-image");
 
-                if (mainImage) {
-                    // Change the main image to the one clicked
-                    mainImage.src = imageUrl;
+            if (mainImage) {
+                // Change the main image to the one clicked
+                mainImage.src = imageUrl;
 
-                    // Also display the clicked image in the modal for a larger view
-                    const modalImage = document.getElementById("modal-image");
-                    if (modalImage) {
-                        modalImage.src = imageUrl;
-                    }
-
-                    // Show the modal to display the larger image using Bootstrap's Modal
-                    var modal = new bootstrap.Modal(document.getElementById('imageModal'));
-                    modal.show();
+                // Also display the clicked image in the modal for a larger view
+                const modalImage = document.getElementById("modal-image");
+                if (modalImage) {
+                    modalImage.src = imageUrl;
                 }
-            }
 
-            // Attach the changeMainImage function to the image click event
-            const images = document.querySelectorAll(".img-small");
-            images.forEach(image => {
-                image.addEventListener("click", function () {
-                    changeMainImage(image.src);
-                });
+                // Show the modal to display the larger image using Bootstrap's Modal
+                var modal = new bootstrap.Modal(document.getElementById('imageModal'));
+                modal.show();
+            }
+        }
+
+        // Attach the changeMainImage function to the image click event
+        const images = document.querySelectorAll(".img-small");
+        images.forEach(image => {
+            image.addEventListener("click", function () {
+                changeMainImage(image.src);
             });
         });
 
+        // Update the main image when a color variant is selected
+        const colorInputs = document.querySelectorAll('.color-input');
+        const selectedVariantField = document.getElementById('selected-variant-id');
+
+        colorInputs.forEach(input => {
+            input.addEventListener('change', function () {
+                const selectedVariantId = input.value;
+                const mainImage = document.getElementById('main-image');
+
+                // Change the main image to the one for the selected variant
+                const selectedVariantImage = document.getElementById('variant-image-' + selectedVariantId);
+                if (selectedVariantImage) {
+                    mainImage.src = selectedVariantImage.src;
+                }
+
+                // Update the hidden input field with the selected variant id
+                selectedVariantField.value = selectedVariantId;
+            });
+        });
+    });
 </script>
 
 <style>
-        .main-image-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Center images */
-        }
+    .main-image-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center images */
+    }
 
-        .main-image {
-            width: 100%; /* The main image takes up the full width */
-            max-height: 500px; /* Limit the height of the main image */
-            object-fit: contain; /* Ensure the image fits within the container without cropping */
-        }
+    .main-image {
+        width: 100%; /* The main image takes up the full width */
+        max-height: 500px; /* Limit the height of the main image */
+        object-fit: contain; /* Ensure the image fits within the container without cropping */
+    }
 
-        .small-images {
-            display: flex;
-            justify-content: flex-start; /* Align small images to the left */
-            gap: 15px; /* Space between images */
-            flex-wrap: wrap; /* Allow images to wrap if they don't fit in one row */
-            margin-top: 15px;
-        }
+    .small-images {
+        display: flex;
+        justify-content: flex-start; /* Align small images to the left */
+        gap: 15px; /* Space between images */
+        flex-wrap: wrap; /* Allow images to wrap if they don't fit in one row */
+        margin-top: 15px;
+    }
 
-        .img-small {
-            width: 150px; /* Increase the size of the thumbnail image */
-            height: 150px; /* Height of the thumbnail */
-            object-fit: cover; /* Ensure the thumbnail image is covered */
-            cursor: pointer; /* Change cursor to indicate the image is clickable */
-            transition: transform 0.3s ease-in-out;
-        }
+    .img-small {
+        width: 150px; /* Increase the size of the thumbnail image */
+        height: 150px; /* Height of the thumbnail */
+        object-fit: cover; /* Ensure the thumbnail image is covered */
+        cursor: pointer; /* Change cursor to indicate the image is clickable */
+        transition: transform 0.3s ease-in-out;
+    }
 
-        .img-small:hover {
-            transform: scale(1.1); /* Enlarge thumbnail on hover */
-        }
+    .img-small:hover {
+        transform: scale(1.1); /* Enlarge thumbnail on hover */
+    }
 
-        .modal-content {
-            background-color: transparent;
-        }
+    .color-dots {
+        display: flex;
+        gap: 10px;
+    }
 
-        .modal-body {
-            text-align: center;
-        }
+    .color-dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid #ddd;
+        transition: transform 0.3s ease-in-out;
+    }
 
-        #modal-image {
-            width: 100%; /* Set the modal image to be full-width */
-            max-width: 800px; /* Limit the size to 800px for large images */
-            height: auto; /* Maintain aspect ratio */
-        }
+    .color-dot:hover {
+        transform: scale(1.2);
+    }
 
+    .modal-content {
+        background-color: transparent;
+    }
+
+    .modal-body {
+        text-align: center;
+    }
+
+    #modal-image {
+        width: 100%; /* Set the modal image to be full-width */
+        max-width: 800px; /* Limit the size to 800px for large images */
+        height: auto; /* Maintain aspect ratio */
+    }
 </style>
+
 {% endblock %}

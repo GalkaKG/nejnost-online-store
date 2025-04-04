@@ -1,0 +1,164 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">🛒 Вашата количка</h2>
+
+    {% if cart_items %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th style="width: 15%">Снимка</th>
+                    <th>Продукт</th>
+                    <th>Цвят</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Общо</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>
+                        {% if item.variant.image_url %}
+                            <img src="{{ item.variant.image_url }}"
+                                 alt="{{ item.variant.product.name }}"
+                                 class="img-fluid rounded"
+                                 style="max-height: 80px;">
+                        {% elif item.variant.product.main_image %}
+                            <img src="{{ item.variant.product.main_image.url }}"
+                                 alt="{{ item.variant.product.name }}"
+                                 class="img-fluid rounded"
+                                 style="max-height: 80px;">
+                        {% else %}
+                            <div class="no-image-placeholder rounded" style="width: 80px; height: 80px; background-color: #f8f9fa;"></div>
+                        {% endif %}
+                    </td>
+                    <td>{{ item.variant.product.name }}</td>
+                    <td>
+                        <span class="color-badge"
+                              style="background-color: {{ item.variant.color.hex_code }};
+                                     width: 20px;
+                                     height: 20px;
+                                     display: inline-block;
+                                     border-radius: 50%;
+                                     border: 1px solid #ddd;"></span>
+                        {{ item.variant.color.name }}
+                    </td>
+                    <td>{{ item.variant.get_final_price|floatformat:2 }} лв</td>
+                    <td>
+    <div class="quantity-control d-flex align-items-center">
+        <form method="POST" action="{% url 'update_cart_item' item.id %}" class="d-inline" id="update-form-{{ item.id }}">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="number"
+                       name="quantity"
+                       value="{{ item.quantity }}"
+                       min="1"
+                       max="10"
+                       class="form-control form-control-sm"
+                       style="width: 60px;"
+                       id="quantity-input-{{ item.id }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</td>
+                    <td>{{ item.get_total_price|floatformat:2 }} лв</td>
+                    <td>
+                        <a href="{% url 'remove_from_cart' item.id %}"
+                           class="btn btn-outline-danger btn-sm"
+                           title="Премахни">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot class="table-secondary">
+                <tr>
+                    <td colspan="5" class="text-right"><strong>Крайна сума:</strong></td>
+                    <td><strong>{{ total_price|floatformat:2 }} лв</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Продължи пазаруването
+        </a>
+        <a href="{% url 'proceed_to_payment' %}" class="btn btn-primary">
+            Плащане <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        Вашата количка е празна. <a href="{% url 'home' %}">Разгледайте нашите продукти</a>.
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .color-badge {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .quantity-control input::-webkit-outer-spin-button,
+    .quantity-control input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .quantity-control input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    .no-image-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+    }
+
+     .input-group {
+        width: auto;
+    }
+
+    .input-group-append .btn {
+        padding: 0.25rem 0.5rem;
+    }
+
+    .input-group-sm .form-control {
+        padding: 0.25rem 0.5rem;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Забраняваме автоматичното изпращане при промяна
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('change', function(e) {
+            // Само маркираме като променено, но не изпращаме формата
+            this.dataset.changed = 'true';
+        });
+    });
+
+    // Ръчно изпращане на формата при клик на бутона
+    document.querySelectorAll('.input-group-append button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const form = this.closest('form');
+            form.submit();
+        });
+    });
+});
+</script>
+{% endblock %}

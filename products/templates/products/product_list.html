@@ -3,32 +3,47 @@
 {% block title %}Всички продукти{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">🛒 Всички продукти</h1>
+<h1 class="mb-4">✨ Всички продукти</h1>
 
 <div class="row">
     {% for product in products %}
-    <div class="col-md-4">
-        <div class="card product-card">
-            <div class="product-images">
-                {% for image in product.images.all %}
-                <img src="{{ image.get_image }}" alt="{{ product.name }}"
-                     class="{% if forloop.first %}img-large{% else %}img-small{% endif %}">
-                {% empty %}
-                <img src="/static/images/placeholder.png" alt="No image">
-                {% endfor %}
+    <div class="col-md-4 mb-4">
+        <div class="card product-card h-100">
+            <!-- Главна снимка -->
+            <div class="product-image-wrapper">
+                {% if product.image_url %}
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="img-large">
+                {% else %}
+                <img src="/static/images/placeholder.png" alt="{{ product.name }}" class="img-large">
+                {% endif %}
             </div>
 
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
                 <h5 class="card-title">{{ product.name }}</h5>
-                <p class="card-text">{{ product.description|truncatewords:20 }}</p>
-                <p class="card-text"><strong>{{ product.price }} лв</strong></p>
+                <p class="card-text">{{ product.description|truncatewords:15 }}</p>
 
-                <div class="button-group">
-                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">Виж детайли</a>
-                    <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                <!-- Цена -->
+                <p class="card-text price-display"><strong>{{ product.base_price }} лв</strong></p>
+
+                <!-- Цветови индикатори -->
+                {% if product.variants.all %}
+                <div class="color-dots mb-2">
+                    {% for variant in product.variants.all %}
+                        {% if variant.color.hex_code %}
+                        <span class="color-dot" title="{{ variant.color.name }}" style="background-color: {{ variant.color.hex_code }}"></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Бутоните -->
+                <div class="button-group mt-auto">
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-primary">Детайли</a>
+                    <form method="POST" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form">
                         {% csrf_token %}
+                        <input type="hidden" name="variant_id" value="">
                         <button type="submit" class="btn btn-success">
-                            <i class="fas fa-cart-plus"></i> Добави в количката
+                            <i class="fas fa-cart-plus"></i> Добави
                         </button>
                     </form>
                 </div>
@@ -39,39 +54,67 @@
 </div>
 
 <style>
-.product-images {
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.product-image-wrapper {
+    background-color: #f8f9fa;
+    padding: 10px;
+}
+
+.img-large {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 5px;
+    object-fit: contain;
+}
+
+.card-body {
     display: flex;
-    justify-content: flex-start; /* Align images to the left */
-    gap: 10px; /* Space between images */
-    flex-wrap: wrap; /* Allow images to wrap to the next row if needed */
+    flex-direction: column;
 }
 
-.product-images .img-large {
-    width: 60%; /* The first image takes up more width */
-    max-height: 200px; /* Adjust height of the large image */
-    object-fit: cover;
-    object-position: top center; /* Reduce space between the top and the image */
+.price-display {
+    font-size: 1.2rem;
+    color: #e83e8c;
+    margin: 10px 0;
 }
 
-.product-images .img-small {
-    width: 30%; /* The smaller images take up less width */
-    max-height: 120px; /* Limit the height of the smaller images */
-    object-fit: cover;
-    object-position: top center; /* Focus the top part of the image for the smaller images too */
-    margin-bottom: 10px; /* Space below smaller images if wrapping */
+.color-dots {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.color-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid #ccc;
+    cursor: default;
 }
 
 .button-group {
     display: flex;
-    gap: 10px; /* Space between the buttons */
-    justify-content: space-between; /* Ensure the buttons are spaced correctly */
+    gap: 10px;
     margin-top: 15px;
 }
 
 .button-group .btn {
-    flex: 1; /* Allow buttons to take equal space */
-    text-align: center; /* Center text inside the buttons */
+    flex: 1;
+    text-align: center;
+    padding: 8px 12px;
 }
 </style>
-
 {% endblock %}
