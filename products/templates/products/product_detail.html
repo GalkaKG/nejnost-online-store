@@ -1,16 +1,133 @@
 {% extends 'shop/base.html' %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-6">
-            <img src="{{ product.image_url }}" class="img-fluid" alt="{{ product.name }}">
-        </div>
-        <div class="col-md-6">
-            <h2>{{ product.name }}</h2>
-            <p><strong>Описание:</strong> {{ product.description }}</p>
-            <p><strong>Цена:</strong> {{ product.price }} лв</p>
-            <a href="#" class="btn btn-success">Добави в количката</a>
+<div class="row">
+    <div class="col-md-6">
+        <div class="main-image-container">
+            <!-- Display the main product image -->
+            {% if product.image_url %}
+            <img src="{{ product.image_url }}" id="main-image" class="img-fluid main-image" alt="{{ product.name }}">
+            {% endif %}
+
+            <!-- Display all associated images from ProductImage -->
+            <div class="small-images">
+                {% for product_image in product.images.all %}
+                <img src="{{ product_image.get_image }}" class="img-fluid img-small" alt="{{ product.name }}"
+                     onclick="changeMainImage('{{ product_image.get_image }}')">
+                {% endfor %}
+            </div>
         </div>
     </div>
-{% endblock %}
 
+    <div class="col-md-6">
+        <h2>{{ product.name }}</h2>
+        <p><strong>Описание:</strong> {{ product.description }}</p>
+        <p><strong>Цена:</strong> {{ product.price }} лв</p>
+
+        <!-- Add to Cart button with form submission -->
+        <form method="POST" action="{% url 'add_to_cart' product.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-cart-plus"></i> Добави в количката
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal to show the larger image -->
+<div id="imageModal" class="modal fade" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="modal-image" src="" class="img-fluid" alt="Product Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        // Ensure the DOM is fully loaded before running the script
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to change the main image and open modal when clicking on thumbnails
+            function changeMainImage(imageUrl) {
+                const mainImage = document.getElementById("main-image");
+
+                if (mainImage) {
+                    // Change the main image to the one clicked
+                    mainImage.src = imageUrl;
+
+                    // Also display the clicked image in the modal for a larger view
+                    const modalImage = document.getElementById("modal-image");
+                    if (modalImage) {
+                        modalImage.src = imageUrl;
+                    }
+
+                    // Show the modal to display the larger image using Bootstrap's Modal
+                    var modal = new bootstrap.Modal(document.getElementById('imageModal'));
+                    modal.show();
+                }
+            }
+
+            // Attach the changeMainImage function to the image click event
+            const images = document.querySelectorAll(".img-small");
+            images.forEach(image => {
+                image.addEventListener("click", function () {
+                    changeMainImage(image.src);
+                });
+            });
+        });
+
+</script>
+
+<style>
+        .main-image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center images */
+        }
+
+        .main-image {
+            width: 100%; /* The main image takes up the full width */
+            max-height: 500px; /* Limit the height of the main image */
+            object-fit: contain; /* Ensure the image fits within the container without cropping */
+        }
+
+        .small-images {
+            display: flex;
+            justify-content: flex-start; /* Align small images to the left */
+            gap: 15px; /* Space between images */
+            flex-wrap: wrap; /* Allow images to wrap if they don't fit in one row */
+            margin-top: 15px;
+        }
+
+        .img-small {
+            width: 150px; /* Increase the size of the thumbnail image */
+            height: 150px; /* Height of the thumbnail */
+            object-fit: cover; /* Ensure the thumbnail image is covered */
+            cursor: pointer; /* Change cursor to indicate the image is clickable */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .img-small:hover {
+            transform: scale(1.1); /* Enlarge thumbnail on hover */
+        }
+
+        .modal-content {
+            background-color: transparent;
+        }
+
+        .modal-body {
+            text-align: center;
+        }
+
+        #modal-image {
+            width: 100%; /* Set the modal image to be full-width */
+            max-width: 800px; /* Limit the size to 800px for large images */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+</style>
+{% endblock %}

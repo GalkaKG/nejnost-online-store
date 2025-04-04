@@ -1,0 +1,12 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+    <div class="payment">
+        <h2>Плащане</h2>
+        <p><strong>Общо за плащане:</strong> {{ total_price }} лв</p>
+        <form action="#" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Завърши плащането</button>
+        </form>
+    </div>
+{% endblock %}
