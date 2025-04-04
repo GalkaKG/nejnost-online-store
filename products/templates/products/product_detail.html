@@ -22,7 +22,7 @@
     <div class="col-md-6">
         <h2>{{ product.name }}</h2>
         <p><strong>Описание:</strong> {{ product.description }}</p>
-        <p><strong>Цена:</strong> {{ product.price }} лв</p>
+        <p><strong>Цена:</strong> {{ product.base_price }} лв</p>
 
         <!-- Цветови варианти -->
         {% if product.variants.all %}
