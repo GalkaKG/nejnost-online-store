@@ -15,3 +15,11 @@ services:
     disk:
       name: db-storage
       mountPath: /data
+envVars:
+  - key: DJANGO_SETTINGS_MODULE
+    value: myproject.settings
+  - key: PYTHON_VERSION
+    value: 3.11
+  - key: RENDER
+    value: true
+
