@@ -67,24 +67,14 @@ WSGI_APPLICATION = "shop.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-from pathlib import Path
-import os
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Determine database path based on environment
-if os.environ.get('RENDER') == 'true':
-    DB_PATH = '/data/db.sqlite3'
-else:
-    DB_PATH = os.path.join(BASE_DIR, 'db.sqlite3')
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": DB_PATH,
+        "NAME": BASE_DIR / "db.sqlite3",
+        # 'NAME': os.path.join('/data', 'db.sqlite3'),
     }
 }
-
 
 
 # Password validation
