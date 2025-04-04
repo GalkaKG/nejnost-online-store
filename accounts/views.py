@@ -1,5 +1,8 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+
+from .forms import UserProfileForm
 from .forms import UserRegisterForm
 
 
@@ -19,5 +22,16 @@ def register(request):
 
 
 def profile(request):
-    return render(request, 'accounts/profile.html')
+    profile = request.user.userprofile
 
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+    else:
+        form = UserProfileForm(instance=profile)
+
+    return render(request, 'accounts/profile.html', {
+        'form': form,
+        'user': request.user,
+    })
