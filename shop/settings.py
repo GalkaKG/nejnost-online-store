@@ -126,3 +126,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGOUT_REDIRECT_URL = '/'
+
+# Orders courier
+SPEEDY_USERNAME = "galina_georgieva_net@abv.bg"
+SPEEDY_PASSWORD = "123456-Aa"
