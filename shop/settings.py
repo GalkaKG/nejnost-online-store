@@ -130,3 +130,10 @@ LOGOUT_REDIRECT_URL = '/'
 # Orders courier
 SPEEDY_USERNAME = "galina_georgieva_net@abv.bg"
 SPEEDY_PASSWORD = "123456-Aa"
+
+
+# Stripe
+STRIPE_PUBLIC_KEY = 'pk_test_51QP2lcBI1oHbzfeSXynNiixHy8pZCfs1JkSEW2KTl1FWe7Yg2vKZ0UhBSkdrbfObGtFISG3BCEn7eRmtR19QKoQo00ODhwWa7y'
+STRIPE_SECRET_KEY = 'sk_test_51QP2lcBI1oHbzfeSKBdIvTl7NIw4e1hg16OLdwvOIxf1OggCppZg8xWnnVfrnRmClnmSarRkOCNTcpsAN1oSbvtl00RxLB5sy4'
+
+
