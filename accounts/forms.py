@@ -5,7 +5,9 @@ from .models import UserProfile
 
 
 class UserRegisterForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label="Потребител")
+    email = forms.EmailField(label="Имейл")
+    password = forms.CharField(widget=forms.PasswordInput, label="Парола")
     password_confirm = forms.CharField(widget=forms.PasswordInput, label="Потвърди паролата")
 
     class Meta:
@@ -22,6 +24,13 @@ class UserRegisterForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    full_name = forms.CharField(label="Име и Презиме")
+    phone_number = forms.CharField(label="Телефонен номер")
+    address_line1 = forms.CharField(label="Адрес")
+    city = forms.CharField(label="Град")
+    postal_code = forms.CharField(label="Пощенски код")
+    country = forms.CharField(label="Държава")
+
     class Meta:
         model = UserProfile
-        fields = ['phone_number', 'address_line1', 'address_line2', 'city', 'postal_code', 'country']
+        fields = ['full_name', 'phone_number', 'address_line1', 'city', 'postal_code', 'country']

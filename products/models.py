@@ -32,7 +32,8 @@ class Color(models.Model):
             'всички цветове': '#aaaaaa',
             'бебешко розов': '#d5aeb1',
             'светло син': '#b2d0e8',
-            'тюркоазено': '#81b4b3'
+            'тюркоазено': '#81b4b3',
+            'зелен': '#11814e'
         }
         if not self.hex_code:
             self.hex_code = default_hex_codes.get(self.name, '#cccccc')
