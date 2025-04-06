@@ -3,15 +3,40 @@
 {% block title %}Всички продукти{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">✨ Всички продукти</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Всички продукти</h1>
 
+    <!-- Сортиране -->
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            {% if current_sort == 'price_asc' %}
+                Най-евтини първи
+            {% elif current_sort == 'price_desc' %}
+                Най-скъпи първи
+            {% elif current_sort == 'updated' %}
+                Последно обновени
+            {% else %}
+                Сортирай по
+            {% endif %}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
+            <li><a class="dropdown-item" href="?sort=updated">Последно обновени</a></li>
+            <li><a class="dropdown-item" href="?sort=price_asc">Най-евтини първи</a></li>
+            <li><a class="dropdown-item" href="?sort=price_desc">Най-скъпи първи</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Продукти -->
 <div class="row">
     {% for product in products %}
     <div class="col-md-4 mb-4">
         <div class="card product-card h-100">
             <!-- Главна снимка -->
             <div class="product-image-wrapper">
-                {% if product.image_url %}
+                {% if product.main_image %}
+                <img src="{{ product.main_image.url }}" alt="{{ product.name }}" class="img-large">
+                {% elif product.image_url %}
                 <img src="{{ product.image_url }}" alt="{{ product.name }}" class="img-large">
                 {% else %}
                 <img src="/static/images/placeholder.png" alt="{{ product.name }}" class="img-large">
@@ -36,7 +61,7 @@
                 </div>
                 {% endif %}
 
-                <!-- Бутоните -->
+                <!-- Бутони -->
                 <div class="button-group mt-auto">
                     <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-primary">Детайли</a>
                     <form method="POST" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form">
@@ -54,67 +79,114 @@
 </div>
 
 <style>
-.product-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 10px;
-    overflow: hidden;
-}
+    /* Основни стилове за картките */
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #eaeaea;
+    }
 
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
+    .product-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
 
-.product-image-wrapper {
-    background-color: #f8f9fa;
-    padding: 10px;
-}
+    .product-image-wrapper {
+        background-color: #f9f9f9;
+        padding: 15px;
+        height: 240px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.img-large {
-    width: 100%;
-    max-height: 220px;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 5px;
-    object-fit: contain;
-}
+    .img-large {
+        max-height: 210px;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+    }
 
-.card-body {
-    display: flex;
-    flex-direction: column;
-}
+    .card-body {
+        padding: 1.25rem;
+    }
 
-.price-display {
-    font-size: 1.2rem;
-    color: #e83e8c;
-    margin: 10px 0;
-}
+    .card-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+        color: #333;
+    }
 
-.color-dots {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
-}
+    .card-text {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
 
-.color-dot {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    display: inline-block;
-    border: 1px solid #ccc;
-    cursor: default;
-}
+    .price-display {
+        font-size: 1.25rem;
+        color: #d32f2f;  /* Червен цвят за цените */
+        font-weight: 600;
+        margin: 0.5rem 0;
+    }
 
-.button-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-}
+    .color-dots {
+        display: flex;
+        gap: 6px;
+        margin: 0.5rem 0;
+        flex-wrap: wrap;
+    }
 
-.button-group .btn {
-    flex: 1;
-    text-align: center;
-    padding: 8px 12px;
-}
+    .color-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1px solid #e0e0e0;
+    }
+
+    /* Стилове за бутоните */
+    .button-group {
+        display: flex;
+        gap: 8px;
+        margin-top: auto;
+        padding-top: 10px;
+    }
+
+    .button-group .btn {
+        flex: 1;
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    /* Стилове за сортирането */
+    .dropdown-toggle {
+        background: white;
+        color: #333;
+        border: 1px solid #ddd;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 4px;
+    }
+
+    .dropdown-toggle:hover {
+        background: #f8f9fa;
+        border-color: #ccc;
+    }
+
+    .dropdown-menu {
+        border: 1px solid rgba(0,0,0,0.1);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 4px;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
 </style>
 {% endblock %}
