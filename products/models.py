@@ -11,6 +11,7 @@ class Color(models.Model):
         ('бежав', 'Nude'),
         ('розор', 'Pink'),
         ('син', 'Blue'),
+        ('сив', 'Сив')
     ]
     name = models.CharField(max_length=14, choices=COLOR_CHOICES, default='')
     hex_code = models.CharField(max_length=7, blank=True, null=True)
@@ -20,10 +21,11 @@ class Color(models.Model):
             'бяло': '#ffffff',
             'черно': '#000000',
             'камел': '#c19a6b',
-            'бежав': '#f5f5dc',
+            'бежав': '#d9ccc2',
             'розор': '#ffc0cb',
             'син': '#0000ff',
-            'всички цветове': '#aaaaaa',  # примерно сиво
+            'сив': '#6f717c',
+            'всички цветове': '#aaaaaa',
         }
         if not self.hex_code:
             self.hex_code = default_hex_codes.get(self.name, '#cccccc')

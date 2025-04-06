@@ -69,13 +69,24 @@ WSGI_APPLICATION = "shop.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-        # 'NAME': os.path.join('/data', 'db.sqlite3'),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "nejnost_db_x3j7",
+        "USER": "nejnost",
+        "PASSWORD": "aEXWqeAfsMTuGdsfsl4CISXPjnJHC8Tg",
+        "HOST": "dpg-cvp08lodl3ps73frcvrg-a.oregon-postgres.render.com",
+        "PORT": "5432",
     }
 }
+
 
 
 # Password validation
