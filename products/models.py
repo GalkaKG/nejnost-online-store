@@ -4,14 +4,18 @@ from django.contrib.auth.models import User
 
 class Color(models.Model):
     COLOR_CHOICES = [
-        ('всички цветове', 'All colors'),
-        ('бяло', 'White'),
-        ('черно', 'Black'),
+        ('всички цветове', 'Всички цветове'),
+        ('бяло', 'Бяло'),
+        ('черно', 'Черно'),
         ('камел', 'Camel'),
         ('бежав', 'Nude'),
-        ('розор', 'Pink'),
-        ('син', 'Blue'),
-        ('сив', 'Сив')
+        ('розов', 'Розов'),
+        ('бебешко розов', 'Бебешко розов'),
+        ('син', 'Син'),
+        ('сив', 'Сив'),
+        ('зелен', 'Зелен'),
+        ('светло син', 'Светло син'),
+        ('тюркоазено', 'Тюркоазено')
     ]
     name = models.CharField(max_length=14, choices=COLOR_CHOICES, default='')
     hex_code = models.CharField(max_length=7, blank=True, null=True)
@@ -22,10 +26,13 @@ class Color(models.Model):
             'черно': '#000000',
             'камел': '#c19a6b',
             'бежав': '#d9ccc2',
-            'розор': '#ffc0cb',
+            'розов': '##ea558d',
             'син': '#0000ff',
             'сив': '#6f717c',
             'всички цветове': '#aaaaaa',
+            'бебешко розов': '#d5aeb1',
+            'светло син': '#b2d0e8',
+            'тюркоазено': '#81b4b3'
         }
         if not self.hex_code:
             self.hex_code = default_hex_codes.get(self.name, '#cccccc')
