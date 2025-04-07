@@ -4,30 +4,21 @@ from .models import Order
 import requests
 
 
-def create_order(request):
+def checkout_view(request):
     if request.method == 'POST':
-        form = OrderForm(request.POST)
+        form = OrderForm(request.POST, user=request.user)
         if form.is_valid():
             order = form.save(commit=False)
             order.user = request.user
             order.save()
-
-            # Възможна интеграция с API на Speedy или Econt
-            courier = order.courier
-            if courier == 'Speedy':
-                # Изпращаме заявка до Speedy API
-                response = requests.post('https://api.speedy.bg/v1/shipment', data={...})
-            elif courier == 'Econt':
-                # Изпращаме заявка до Econt API
-                response = requests.post('https://www.econt.com/api/', data={...})
-
-            # Връщаме се към потребителя
-            return redirect('order_success')
+            return redirect('thank_you')
     else:
-        form = OrderForm()
-
-    return render(request, 'orders/create_order.html', {'form': form})
+        form = OrderForm(user=request.user)
+    return render(request, 'orders/checkout.html', {'form': form})
 
 
 def order_success(request):
     return render(request, 'orders/order_success.html')
+
+
+

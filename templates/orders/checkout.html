@@ -1,0 +1,85 @@
+{% extends "shop/base.html" %}
+{% block title %}Финализиране на поръчката{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <h2>Финализиране на поръчката</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="checkout-btn">Поръчай</button>
+    </form>
+</div>
+
+<style>
+.checkout-container {
+    max-width: 480px;
+    margin: 40px auto;
+    padding: 30px 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fdfdfe;
+}
+
+.checkout-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2c3e50;
+}
+
+.checkout-container .form-group {
+    margin-bottom: 20px;
+}
+
+.checkout-container .form-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #34495e;
+    font-weight: 500;
+}
+
+.checkout-container input,
+.checkout-container select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccd6dd;
+    background-color: #ffffff;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease;
+}
+
+.checkout-container input:focus,
+.checkout-container select:focus {
+    border-color: #f5a7c3;
+    outline: none;
+}
+
+.checkout-container .form-error {
+    color: #e74c3c;
+    font-size: 13px;
+}
+
+.checkout-btn {
+    width: 100%;
+    background-color: #f5a7c3; /* Barbie pink 💕 */
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 0;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.checkout-btn:hover {
+    background-color: #ff4da6;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}

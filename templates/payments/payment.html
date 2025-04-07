@@ -4,9 +4,29 @@
     <div class="payment">
         <h2>Плащане</h2>
         <p><strong>Общо за плащане:</strong> {{ total_price }} лв</p>
+
         <form action="#" method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn btn-success">Завърши плащането</button>
+
+            <label for="payment_method">Изберете метод на плащане:</label>
+            <select name="payment_method" id="payment_method">
+                <option value="card" {% if payment_method == 'card' %}selected{% endif %}>Карта</option>
+                <option value="cash_on_delivery" {% if payment_method == 'cash_on_delivery' %}selected{% endif %}>Наложен платеж</option>
+            </select>
+
+            <button type="submit" class="btn btn-success">Завърши поръчката</button>
         </form>
+
+        {% if payment_method == 'cash_on_delivery' %}
+            <div class="payment-info">
+                <h3>Наложен платеж</h3>
+                <p>Ще заплатите при доставката на поръчката. Благодарим ви, че пазарувате с нас!</p>
+            </div>
+        {% elif payment_method == 'card' %}
+            <div class="payment-info">
+                <h3>Плащане с карта</h3>
+                <p>Ще бъдете пренасочени към платежната система за плащане с кредитна или дебитна карта.</p>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
