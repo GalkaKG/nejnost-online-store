@@ -9,6 +9,11 @@ from accounts.models import UserProfile
 from .models import Order
 
 
+from django import forms
+from accounts.models import UserProfile
+from .models import Order
+
+
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
@@ -22,6 +27,16 @@ class OrderForm(forms.ModelForm):
             'office_address',
             'payment_method',
         ]
+        labels = {
+            'full_name': 'Пълно име',
+            'phone': 'Телефонен номер',
+            'city': 'Град',
+            'courier': 'Куриер',
+            'delivery_type': 'Тип доставка',
+            'delivery_address': 'Адрес за доставка',
+            'office_address': 'Адрес на офис',
+            'payment_method': 'Метод на плащане',
+        }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -53,3 +68,4 @@ class OrderForm(forms.ModelForm):
             self.fields['phone'].required = True
             self.fields['city'].required = True
             self.fields['delivery_address'].required = True
+
