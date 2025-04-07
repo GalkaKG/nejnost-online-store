@@ -73,11 +73,12 @@ class ProductVariant(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    session_key = models.CharField(max_length=40, null=True, blank=True)  # Session key for anonymous users
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Cart #{self.id} - {self.user.username}"
+        return f"Cart #{self.id} - {self.user.username or 'Anonymous'}"
 
 
 class CartItem(models.Model):

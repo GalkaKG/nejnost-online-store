@@ -4,6 +4,11 @@ from accounts.models import UserProfile
 from .models import Order
 
 
+from django import forms
+from accounts.models import UserProfile
+from .models import Order
+
+
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
@@ -18,18 +23,12 @@ class OrderForm(forms.ModelForm):
             'payment_method',
         ]
 
-    # full_name = forms.CharField(label="Име и Презиме")
-    # phone = forms.CharField(label="Телефонен номер")
-    # city = forms.CharField(label="Град")
-    # delivery_address = forms.CharField(label="Адрес")
-    # courier = forms.CharField(label="Куриер")
-    # delivery_type = forms.CharField(label="Избери вид на доставката")
-
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
         if user and user.is_authenticated:
+            # Ако потребителят е логнат, използвай данни от неговия профил
             try:
                 profile = user.userprofile
 
@@ -48,3 +47,9 @@ class OrderForm(forms.ModelForm):
 
             except UserProfile.DoesNotExist:
                 pass
+        else:
+            # Ако потребителят не е логнат, прави полетата задължителни
+            self.fields['full_name'].required = True
+            self.fields['phone'].required = True
+            self.fields['city'].required = True
+            self.fields['delivery_address'].required = True
