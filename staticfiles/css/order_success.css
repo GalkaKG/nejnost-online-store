@@ -1,0 +1,41 @@
+/* order_success.css */
+
+.success-container {
+    text-align: center;
+    margin-top: 50px;
+    font-family: Arial, sans-serif;
+    color: #4CAF50;
+}
+
+.success-container h2 {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.success-container p {
+    font-size: 1.2em;
+    color: #555;
+    margin-top: 20px;
+}
+
+.success-icon {
+    margin-top: 30px;
+    font-size: 3em;
+    color: #28a745;
+}
+
+.success-container .btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.success-container .btn:hover {
+    background-color: #218838;
+}
