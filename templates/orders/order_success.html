@@ -1,2 +1,11 @@
-<h2>Благодарим за вашата поръчка!</h2>
-<p>Ще се свържем с вас скоро.</p>
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/order_success.css' %}">
+
+<div class="success-container">
+    <h2>Благодарим за вашата поръчка!</h2>
+    <p>Ще се свържем с вас скоро.</p>
+    <i class="success-icon">✔</i>
+    <a href="/" class="btn">Обратно към началната страница</a>
+</div>
+

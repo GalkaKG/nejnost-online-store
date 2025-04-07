@@ -11,7 +11,7 @@ def checkout_view(request):
             order = form.save(commit=False)
             order.user = request.user
             order.save()
-            return redirect('thank_you')
+            return redirect('order_success')
     else:
         form = OrderForm(user=request.user)
     return render(request, 'orders/checkout.html', {'form': form})

@@ -1,22 +1,29 @@
 from django import forms
-from .models import Order
+
 from accounts.models import UserProfile
+from .models import Order
 
-
-# forms.py
 
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = [
             'full_name',
+            'phone',
+            'city',
             'courier',
             'delivery_type',
             'delivery_address',
             'office_address',
             'payment_method',
-            'phone',
         ]
+
+    # full_name = forms.CharField(label="Име и Презиме")
+    # phone = forms.CharField(label="Телефонен номер")
+    # city = forms.CharField(label="Град")
+    # delivery_address = forms.CharField(label="Адрес")
+    # courier = forms.CharField(label="Куриер")
+    # delivery_type = forms.CharField(label="Избери вид на доставката")
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -31,6 +38,9 @@ class OrderForm(forms.ModelForm):
 
                 if not self.initial.get('phone'):
                     self.fields['phone'].initial = profile.phone_number
+
+                if not self.initial.get('city'):
+                    self.fields['city'].initial = profile.city
 
                 if not self.initial.get('delivery_address') and profile.address_line1:
                     full_address = f"{profile.address_line1}, {profile.postal_code} {profile.city}, {profile.country}"

@@ -100,7 +100,12 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -118,5 +123,4 @@ SPEEDY_PASSWORD = os.getenv("SPEEDY_PASSWORD")
 # Stripe
 STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIK_KEY")
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
-
 

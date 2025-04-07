@@ -2,7 +2,7 @@
 
 Nejnost is an online clothing store that offers a variety of high-quality clothes, providing customers with a seamless shopping experience. The website is designed to be easy to navigate, secure, and responsive, allowing you to shop for the latest trends from anywhere.
 
-## Live Demo
+## Live
 
 You can explore the live demo of the store here: [https://momshop.onrender.com/](https://momshop.onrender.com/)
 

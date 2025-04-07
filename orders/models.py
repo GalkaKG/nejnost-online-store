@@ -1,6 +1,3 @@
-from django.db import models
-from django.conf import settings
-
 from django.conf import settings
 from django.db import models
 
@@ -34,9 +31,12 @@ class Order(models.Model):
 
     phone = models.CharField(max_length=20, blank=True, null=True)
 
+    city = models.CharField(max_length=20, blank=True, null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     status = models.CharField(max_length=50, default='в процес')
+
 
     def save(self, *args, **kwargs):
         if self.delivery_type == 'home':

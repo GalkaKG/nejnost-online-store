@@ -6,7 +6,7 @@ from django.views.decorators.cache import cache_page
 from .models import Product, ProductVariant, Cart, CartItem
 
 
-@cache_page(60 * 15)  # Кеширане за 15 минути
+# @cache_page(60 * 15)  # Кеширане за 15 минути
 def product_list(request):
     # Взимаме параметъра за сортиране от URL
     sort_by = request.GET.get('sort', '')  # Празно по подразбиране

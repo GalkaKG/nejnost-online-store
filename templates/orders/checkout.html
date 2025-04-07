@@ -12,6 +12,35 @@
     </form>
 </div>
 
+<script>
+    // Функция, която ще показва или скрива полетата за адресите
+    function toggleAddressFields() {
+        const deliveryType = document.getElementById('id_delivery_type'); // Получаваме избора на тип доставка
+        const deliveryAddressField = document.getElementById('id_delivery_address'); // Поле за адрес на доставка
+        const officeAddressField = document.getElementById('id_office_address'); // Поле за адрес на офис на куриер
+
+        // Скриваме и двете полета първоначално
+        deliveryAddressField.parentElement.style.display = 'none';
+        officeAddressField.parentElement.style.display = 'none';
+
+        if (deliveryType.value === 'home') {
+            // Ако е избрана доставка до адрес, показваме само адреса за доставка
+            deliveryAddressField.parentElement.style.display = 'block';
+        } else if (deliveryType.value === 'office') {
+            // Ако е избрана доставка до офис, показваме само адреса на офис на куриер
+            officeAddressField.parentElement.style.display = 'block';
+        }
+    }
+
+    // Извикваме функцията при зареждане на страницата
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleAddressFields();
+    });
+
+    // Добавяме слушател на събитие за промяна на избора на доставка
+    document.getElementById('id_delivery_type').addEventListener('change', toggleAddressFields);
+</script>
+
 <style>
 .checkout-container {
     max-width: 480px;
