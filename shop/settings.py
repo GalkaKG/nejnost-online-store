@@ -5,24 +5,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-2-g3sp1_k9ypn6#s-7m*1@!ehs#p@ni-qc2qs9dcd93f%+8)nl"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ["momshop.onrender.com", "127.0.0.1"]
-
-
-# Application definition
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -70,28 +59,16 @@ TEMPLATES = [
 WSGI_APPLICATION = "shop.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "nejnost_db_x3j7",
-        "USER": "nejnost",
-        "PASSWORD": "aEXWqeAfsMTuGdsfsl4CISXPjnJHC8Tg",
-        "HOST": "dpg-cvp08lodl3ps73frcvrg-a.oregon-postgres.render.com",
-        "PORT": "5432",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
     }
 }
-
 
 
 # Password validation
@@ -112,10 +89,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -125,9 +98,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -136,20 +106,17 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGOUT_REDIRECT_URL = '/'
 
 # Orders courier
-SPEEDY_USERNAME = "galina_georgieva_net@abv.bg"
-SPEEDY_PASSWORD = "123456-Aa"
+SPEEDY_USERNAME = os.getenv("SPEEDY_USERNAME")
+SPEEDY_PASSWORD = os.getenv("SPEEDY_PASSWORD")
 
 
 # Stripe
-STRIPE_PUBLIC_KEY = 'pk_test_51QP2lcBI1oHbzfeSXynNiixHy8pZCfs1JkSEW2KTl1FWe7Yg2vKZ0UhBSkdrbfObGtFISG3BCEn7eRmtR19QKoQo00ODhwWa7y'
-STRIPE_SECRET_KEY = 'sk_test_51QP2lcBI1oHbzfeSKBdIvTl7NIw4e1hg16OLdwvOIxf1OggCppZg8xWnnVfrnRmClnmSarRkOCNTcpsAN1oSbvtl00RxLB5sy4'
+STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIK_KEY")
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 
 
