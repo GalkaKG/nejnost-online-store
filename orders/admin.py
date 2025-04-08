@@ -1,9 +1,16 @@
 from django.contrib import admin
-from .models import Order
+from .models import Order, OrderItem
+
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    inlines = [OrderItemInline]
+
     list_display = (
         'id', 'full_name', 'user', 'courier', 'delivery_type',
         'get_delivery_address', 'city', 'payment_method', 'status', 'created_at'
@@ -20,5 +27,3 @@ class OrderAdmin(admin.ModelAdmin):
         return "—"
 
     get_delivery_address.short_description = 'Адрес на доставка'
-
-

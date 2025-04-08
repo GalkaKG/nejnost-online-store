@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from products.models import ProductVariant
+
 
 class Order(models.Model):
     COURIER_CHOICES = [
@@ -37,7 +39,6 @@ class Order(models.Model):
 
     status = models.CharField(max_length=50, default='в процес')
 
-
     def save(self, *args, **kwargs):
         if self.delivery_type == 'home':
             self.office_address = None
@@ -49,3 +50,10 @@ class Order(models.Model):
         return f"Поръчка #{self.id} от {self.user}"
 
 
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    variant = models.ForeignKey(ProductVariant, on_delete=models.PROTECT)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.variant} x {self.quantity}"

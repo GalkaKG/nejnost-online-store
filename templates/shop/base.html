@@ -4,69 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Нежност{% endblock %}</title>
+
+    <!-- Bootstrap + Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-        body { padding: 20px; }
-        .product-img { max-width: 100%; height: auto; border-radius: 10px; }
-        .product-card { transition: 0.3s; }
-        .product-card:hover { transform: scale(1.05); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+        body {
+            padding-top: 70px;
+            background-color: #fff9f9;
+        }
+
+        /* Navbar */
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #d63384 !important;
+        }
+
+        .navbar .nav-link {
+            color: #343a40;
+            font-weight: 500;
+        }
+
+        .navbar .nav-link:hover {
+            color: #d63384;
+        }
+
+        .btn-logout {
+            margin-left: 10px;
+        }
+
+        /* Карти с продукти */
+        .product-card {
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-card .card-body {
+            background-color: #f8f9fa;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-item a span {
+                display: none;
+            }
+        }
     </style>
 </head>
-<style>
-    .product-img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 10px;
-    }
-
-    .product-card {
-        transition: 0.3s;
-    }
-
-    .product-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .product-card .card-body {
-        background-color: #f8f9fa;
-    }
-</style>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-        <a class="navbar-brand" href="{% url 'home' %}">🛍️ Онлайн бутик Нежност</a>
-        <ul class="navbar-nav ms-auto">
+    <!-- Навигация -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">🛍️ Нежност</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                 <!-- Икона за количката -->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'view_cart' %}">
-                    <i class="fas fa-shopping-cart"></i> Количка
-                    {% if cart_item_count %}
-                        <span class="badge bg-danger">{{ cart_item_count }}</span> <!-- Покажи бройката на продуктите в количката -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+                <ul class="navbar-nav align-items-center">
+                    <!-- Количка -->
+                    <li class="nav-item me-3">
+                        <a class="nav-link position-relative" href="{% url 'view_cart' %}">
+                            <i class="fas fa-shopping-cart fa-lg"></i>
+                            {% if cart_item_count %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ cart_item_count }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    {% if user.is_authenticated %}
+                        <!-- Профил -->
+                        <li class="nav-item me-3">
+                            <a class="nav-link" href="{% url 'profile' %}">
+                                <i class="fas fa-user-circle fa-lg"></i>
+                                <span>{{ user.username }}</span>
+                            </a>
+                        </li>
+
+                        <!-- Изход -->
+                        <li class="nav-item">
+                            <form method="POST" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm btn-logout">
+                                    <i class="fas fa-sign-out-alt"></i> Изход
+                                </button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <!-- Вход -->
+                        <li class="nav-item me-2">
+                            <a class="nav-link" href="{% url 'login' %}">
+                                <i class="fas fa-sign-in-alt fa-lg"></i>
+                            </a>
+                        </li>
+                        <!-- Регистрация -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">
+                                <i class="fas fa-user-plus fa-lg"></i>
+                            </a>
+                        </li>
                     {% endif %}
-                </a>
-            </li>
-            {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">👤 {{ user.username }}</a></li>
-                <form method="POST" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Изход</button>
-                </form>
-            {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">🔑 Вход</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">📝 Регистрация</a></li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Основно съдържание -->
     <div class="container mt-4">
         {% block content %}{% endblock %}
     </div>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
