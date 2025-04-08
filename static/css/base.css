@@ -92,6 +92,27 @@ footer p {
 }
 
 
+
+
+html, body {
+    height: 100%; /* Задава височина на страницата */
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex-grow: 1; /* Това ще позволи на контейнера да заеме останалото пространство */
+}
+
+footer {
+    margin-top: auto; /* Поставя футъра в долната част на страницата */
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .navbar .nav-item a span {
