@@ -36,6 +36,14 @@
                     </a>
                 </li>
 
+                <!-- Линкове към "За нас" и "Контакти" -->
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="{% url 'about_us' %}">За нас</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="{% url 'contact_us' %}">Контакти</a>
+                </li>
+
                 {% if user.is_authenticated %}
                 <!-- Профил -->
                 <li class="nav-item me-3">
