@@ -22,8 +22,8 @@ def product_list(request):
     elif sort_by == 'updated':
         products = products.order_by('-id')  # Или '-updated_at' ако имате такова поле
     else:
-        # По подразбиране - първи създадени (най-стари)
-        products = products.order_by('id')
+        # По подразбиране - първи създадени (рандом)
+        products = products.order_by('?')
 
     return render(request, 'products/product_list.html', {
         'products': products,
@@ -91,22 +91,6 @@ def add_to_cart(request, product_id):
 
     # Пренасочване към страницата с количката
     return redirect('view_cart')
-
-
-# def view_cart(request):
-#     # For authenticated users, use the user-specific cart
-#     if request.user.is_authenticated:
-#         cart = get_object_or_404(Cart, user=request.user)
-#     else:
-#         # For anonymous users, use session-based cart
-#         cart = get_object_or_404(Cart, session_key=request.session.session_key)
-#
-#     cart_items = cart.items.all()
-#     total_price = sum(item.get_total_price() for item in cart_items)
-#     return render(request, 'cart/cart.html', {
-#         'cart_items': cart_items,
-#         'total_price': total_price
-#     })
 
 
 def view_cart(request):
