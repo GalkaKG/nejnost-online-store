@@ -1,0 +1,122 @@
+/* Заглавие */
+.title-product {
+    font-size: 2rem;
+    color: #343a40; /* По-нежен цвят */
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+    transition: color 0.3s ease;
+}
+
+.title-product:hover {
+    color: #007bff; /* Лек акцент на hover */
+}
+/* Основни стилове за картките */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #eaeaea;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.product-image-wrapper {
+    background-color: #f9f9f9;
+    padding: 15px;
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-large {
+    max-height: 210px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: #333;
+}
+
+.card-text {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.price-display {
+    font-size: 1.25rem;
+    color: #d32f2f;  /* Червен цвят за цените */
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+
+.color-dots {
+    display: flex;
+    gap: 6px;
+    margin: 0.5rem 0;
+    flex-wrap: wrap;
+}
+
+.color-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid #e0e0e0;
+}
+
+/* Стилове за бутоните */
+.button-group {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.button-group .btn {
+    flex: 1;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Стилове за сортирането */
+.dropdown-toggle {
+    background: white;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 4px;
+}
+
+.dropdown-toggle:hover {
+    background: #f8f9fa;
+    border-color: #ccc;
+}
+
+.dropdown-menu {
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 4px;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
