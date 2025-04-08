@@ -54,6 +54,65 @@ body {
     font-size: 0.75rem;
 }
 
+/* Footer стилове */
+footer {
+    background-color: #f8f9fa; /* Светло сив фон */
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Лека сянка отгоре */
+    margin-top: 40px;
+}
+
+footer ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+footer ul li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+footer ul li a {
+    color: #6c757d; /* Светло сив цвят за текст */
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+footer ul li a:hover {
+    color: #007bff; /* Син цвят при hover */
+}
+
+footer p {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+
+
+
+html, body {
+    height: 100%; /* Задава височина на страницата */
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex-grow: 1; /* Това ще позволи на контейнера да заеме останалото пространство */
+}
+
+footer {
+    margin-top: auto; /* Поставя футъра в долната част на страницата */
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .navbar .nav-item a span {
