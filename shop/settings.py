@@ -125,3 +125,10 @@ SPEEDY_PASSWORD = os.getenv("SPEEDY_PASSWORD")
 STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIK_KEY")
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 
+# Caching Configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
