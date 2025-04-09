@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from products.models import Cart
+from cart.models import Cart
 # from django.contrib.auth.decorators import login_optional
 from .forms import OrderForm
 from .models import OrderItem

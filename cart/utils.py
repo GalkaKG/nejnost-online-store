@@ -1,4 +1,4 @@
-from products.models import Cart
+from cart.models import Cart
 
 
 def get_or_create_cart(request):
