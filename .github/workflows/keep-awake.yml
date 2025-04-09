@@ -9,5 +9,5 @@ jobs:
   ping-render:
     runs-on: ubuntu-latest
     steps:
-      - name: Curl your Render site
-        run: curl -s https://momshop.onrender.com > /dev/null
+      - name: Curl Render site
+        run: curl -s https://nejnosts.onrender.com/ > /dev/null
