@@ -1,25 +1,25 @@
-services:
-  - type: web
-    name: momshop
-    env: python
-    buildCommand: |
-      pip install -r requirements.txt
-      python manage.py collectstatic --noinput
-      python manage.py migrate --noinput
-    startCommand: gunicorn myproject.wsgi:application
-    envVars:
-      - key: DJANGO_SETTINGS_MODULE
-        value: myproject.settings
-      - key: PYTHON_VERSION
-        value: 3.11
-    disk:
-      name: db-storage
-      mountPath: /data
-envVars:
-  - key: DJANGO_SETTINGS_MODULE
-    value: myproject.settings
-  - key: PYTHON_VERSION
-    value: 3.11
-  - key: RENDER
-    value: true
-
+#services:
+#  - type: web
+#    name: momshop
+#    env: python
+#    buildCommand: |
+#      pip install -r requirements.txt
+#      python manage.py collectstatic --noinput
+#      python manage.py migrate --noinput
+#    startCommand: gunicorn shop.wsgi:application
+#    envVars:
+#      - key: DJANGO_SETTINGS_MODULE
+#        value: shop.settings
+#      - key: PYTHON_VERSION
+#        value: 3.11
+#    disk:
+#      name: db-storage
+#      mountPath: /data
+#envVars:
+#  - key: DJANGO_SETTINGS_MODULE
+#    value: shop.settings
+#  - key: PYTHON_VERSION
+#    value: 3.11
+#  - key: RENDER
+#    value: true
+#
