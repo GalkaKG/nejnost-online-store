@@ -72,13 +72,15 @@ class ProductVariant(models.Model):
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     session_key = models.CharField(max_length=40, null=True, blank=True)  # Session key for anonymous users
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Cart #{self.id} - {self.user.username or 'Anonymous'}"
+        if self.user:
+            return f"Cart #{self.id} - {self.user.username}"
+        return f"Cart #{self.id} - Anonymous (session {self.session_key})"
 
 
 class CartItem(models.Model):
@@ -89,6 +91,7 @@ class CartItem(models.Model):
     def get_total_price(self):
         return self.variant.get_final_price() * self.quantity
 
-
     def __str__(self):
-        return f"{self.quantity}x {self.variant} in cart #{self.cart.id}"
+        cart_info = f"#{self.cart.id}" if self.cart else "no cart"
+        return f"{self.quantity}x {self.variant} in cart {cart_info}"
+

@@ -59,6 +59,8 @@ def add_to_cart(request, product_id):
         cart, created = Cart.objects.get_or_create(user=request.user)
     else:
         # За анонимни потребители
+        if not request.session.session_key:
+            request.session.create()  # Ensure session exists
         session_key = request.session.session_key
 
         # Търсим колички с този session_key
@@ -69,7 +71,7 @@ def add_to_cart(request, product_id):
             cart = carts.first()  # Вземаме първата количка (можеш да добавиш допълнителна логика за избор)
         else:
             # Ако няма количка, създаваме нова
-            cart = Cart.objects.create(session_key=session_key)
+            cart = Cart.objects.create(session_key=session_key, user=None)  # Добави user=None за неавтентифицираните
             request.session.save()  # Записваме сесията, ако е създадена нова количка за анонимен потребител
 
     # Добави или обнови продукта в количката
@@ -91,6 +93,7 @@ def add_to_cart(request, product_id):
 
     # Пренасочване към страницата с количката
     return redirect('view_cart')
+
 
 
 def view_cart(request):
